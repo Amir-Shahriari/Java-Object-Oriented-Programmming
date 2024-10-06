@@ -1,64 +1,23 @@
-## Major creative work
+1. Handling Return Values
+The system was originally implemented using "magic numbers" and null values to indicate different return statuses, which made it error-prone and hard to debug. The current implementation refactors these methods by replacing the magic numbers and null values with more appropriate return mechanisms.
 
-Your major creative work is worth 60% of your unit total and is made up of four components:
+Enums: Used to represent status codes for success, failure, or error conditions, providing a more readable and maintainable approach.
+Exception Handling: Used in scenarios where failures are exceptional and need explicit handling by the calling code.
+2. Transaction Management
+The system manages user transactions, particularly purchasing and selling of in-game items, through the Player and Seller classes. Redundant code between these classes has been minimized by introducing inheritance in a more structured manner.
 
-  * In-class activities: 12%
-  * Milestone 1: 8%
-  * Milestone 2: 20%
-  * Viva Exam: 20%
+Inheritance: Key functionality that is common between Player and Seller has been refactored into a parent class, allowing both classes to share methods related to transactions.
+Specialized Methods: Each class retains methods for operations that are unique to either the player or the seller, ensuring flexibility where needed.
+3. Item Management Using Composition
+Previously, the system relied heavily on inheritance for managing different types of items, which created a rigid and inflexible structure. The refactor transitions to a composition-based approach for handling item behaviors.
 
-## Milestone 1
-### Due date is Sunday 3rd of September 2023, at 11:55pm.
+Composition over Inheritance: Item functionality is now broken into smaller, reusable components, allowing for more flexible item creation and behavior extension.
+Static Item Creation: The ItemReader class contains a method responsible for creating instances of items. This method has been modified to support the composition-based item creation.
+Interfaces: The ItemInterface and BasketInterface have been retained to ensure compatibility with the user interface. The method signatures remain unchanged, but their implementations have been updated to work with the new composition-based design.
+4. Data Models
+The system uses two main data models, InventoryTableRow and CartTableRow, to represent the structure of the inventory and the transaction cart, respectively. These models are used to store and display data related to items and transactions.
 
-The code is in a *separate* repository from the weekly exercises:
-
-`git clone https://github.com/mq-soft-tech/comp2000_2023_project.git`
-
-__You should start from the repository branch tagged as "milestone1".__
-
-## Prompt
-
-An indie games company, LART Studios, is in the process of developing a standard set of tools and features of their future games. Fred, who was obsessed with inheritance and object oriented design was put in charge of developing an inventory system. Fred went overboard with inheritance and was fired for creating a such a rigid system, and the company has outsourced the inventory system to you. You have been provided with Fred's last known bit of work, and a basic user interface to allow you to play with it.
-
-## Task 1
-
-LART Studios noticed Fred used "magic numbers" as return values as well as potentially program crashing null return values. Convert these return values to something that pushes any future developers to handle both good and bad return values.
-
-
-## Task 2
-
-There is redundant code with the `Player` and `Seller`, particularly where purchases/transactions between the two happen. Refactor these classes to make good (light) use of inheritance.
-
-__For full marks, you must use inheritance appropriately in your solution__.
-
-## Task 3
-
-Undo Fred's heavy handed use of inheritance with `Item`'s, such that it instead favours composition. This may lead you to editing the static method found in `ItemReader.java` where instances of each `Item` are created. `Item`'s are read one-by-one, and are given to either the `Player` or `Seller` which is handled for you. The data needed for creating items has been extracted for you.
-
-The company has provided data models (`InventoryTableRow` & `CartTableRow`), as well as the interfaces (`ItemInterface` and `BasketInterface`) which your `Item`'s and `Basket`'s must implement for the user interface to function correctly. They have advised you to not modify the provided method signatures in these interfaces. However, their implementations will need to be changed for this task.
-
-## Submission
-
-You must submit a zipped archive of your code.  Your maker will download your zip file, open it in VSCode and run it from there.  Please don't submit unnecessary temporary files (such as .class files) in your zip file. So you should:
-
-* delete any temporary files
-* rename the parent folder (comp2000\_2023\_project) to match your student ID
-* upload the zip
-
-eg. if your student ID is 45678912 then the folder structure should look like
-
-```
-45678912
-├── data
-│   └── config.txt
-├── lib
-│   └── ui.jar
-├── src
-│   └── *.java
-└── README.md
-```
-
-## Important notes
-
-* Submitted code __*must*__ compile. If the code does not compile and/or run you will receive a mark of zero.
-* Submissions must be in a __zip__ file, not rar or any other archive format and must follow the structure described above
+InventoryTableRow: Represents individual items stored in a player’s inventory or available for sale.
+CartTableRow: Represents items currently added to the player’s purchase or sale cart, along with relevant transaction information.
+5. User Interface Integration
+The inventory system has been integrated with a basic user interface that allows users to interact with the inventory and transaction components. The UI remains largely unchanged, but is designed to work seamlessly with the refactored system.
